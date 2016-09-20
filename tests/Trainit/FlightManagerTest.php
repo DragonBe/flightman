@@ -1,6 +1,6 @@
 <?php
 
-namespace In2it\Trainit\Test;
+namespace In2it\Test\Trainit;
 
 use In2it\Trainit\FlightManager;
 use In2it\Trainit\Entity\Flight;
