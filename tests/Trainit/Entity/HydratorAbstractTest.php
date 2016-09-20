@@ -12,23 +12,25 @@ namespace In2it\Test\Trainit\Entity;
 use In2it\Trainit\Entity\FlightHydrator;
 use In2it\Trainit\Entity\Flight;
 use In2it\Trainit\Entity\HydratorAbstract;
+use \Faker\Factory;
 
 class HydratorAbstractTest extends \PHPUnit_Framework_TestCase
 {
     public function flightDataProvider()
     {
-        return [
-            [
-                [
-                    'departure_date' => '2016-09-20 10:00:00',
-                    'departure_airport_code' => 'BRU',
-                    'arrival_date' => '2016-09-20 14:00:00',
-                    'arrival_airport_code' => 'ALC',
-                    'airline_code' => 'SN',
-                    'flight_number' => '1024',
-                ],
-            ],
-        ];
+        $faker = \Faker\Factory::create();
+        $data = [];
+        for ($i = 0; $i < 100; $i++) {
+            $data[] = [[
+                'departure_date' => $faker->dateTimeThisYear($max = 'now')->format('Y-m-d H:i:s'),
+                'departure_airport_code' => strtoupper($faker->lexify('???')),
+                'arrival_date' => $faker->dateTimeThisYear($max = 'now')->format('Y-m-d H:i:s'),
+                'arrival_airport_code' => strtoupper($faker->lexify('???')),
+                'airline_code' => strtoupper($faker->lexify('??')),
+                'flight_number' => $faker->numberBetween($min = 1, $max = 9999),
+            ]];
+        }
+        return $data;
     }
 
     /**
@@ -46,6 +48,7 @@ class HydratorAbstractTest extends \PHPUnit_Framework_TestCase
         $flightHydrator->hydrate($flight, $data);
 
         $this->assertSame($data['departure_airport_code'], $flight->getDepartureAirportCode());
+        $this->markTestIncomplete('Need to fix airport code handling');
     }
 
     /**
